@@ -24,6 +24,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Tells Express that any file in your public directory
 //    should be accessible directly through your website
 
+// Set EJS as the templating engine
+app.set('view engine', 'ejs');
+
+// Tell Express where to find your templates
+app.set('views', path.join(__dirname, 'src/views'));
 
 /**
   * Routes
@@ -32,15 +37,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 // req = parameter represents the incoming requests
 // res = parameter used to send a response back to clients
 app.get('/', (req, res) => { 
-    res.sendFile(path.join(__dirname, 'src/views/home.html'));
+    const title = 'Home';
+    res.render('home', {title});
 });
 
 app.get('/organizations', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/organizations.html'));
+    const title = 'Our Partner Organizations';
+    res.render('organizations', { title });
 });
 
 app.get('/projects', (req, res) => {
-    res.sendFile(path.join(__dirname, 'src/views/projects.html'));
+    const title = 'Service Projects';
+    res.render('projects', { title });
 });
 
 //Start the server and make it listen for incoming requests on the
