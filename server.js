@@ -51,6 +51,11 @@ app.get('/projects', (req, res) => {
     res.render('projects', { title });
 });
 
+app.get('/categories', (req, res) => {
+    const title = 'Categories';
+    res.render('categories', { title });
+});
+
 //Start the server and make it listen for incoming requests on the
 // specifies port (3000):
 app.listen(PORT, () => {
