@@ -1,31 +1,132 @@
-html,
-body {
-    background-color: lightblue;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+/* Modern site-wide styles for CSE 340 Service Network */
+
+/* Google font is loaded via <link> in header.ejs */
+
+:root {
+    --primary-color: #0e2463;
+    /* dark blue */
+    --secondary-color: #0c7d8b;
+    /* green */
+    --accent-color: #93ddff;
+    /* light blue */
+    --bg-color: #ffffff;
+    --text-color: #1f2937;
+    /* dark gray */
+    --muted-color: #6b7280;
 }
 
+* {
+    box-sizing: border-box;
+}
+
+html,
 body {
-    nav {
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Roboto', Arial, sans-serif;
+    line-height: 1.6; 
+}
 
-        li {
-            display: inline;
-            margin-right: 15px;
-        }
+main{
+    margin: 0.5em;
+    padding: 0.5em;
+    width: 80%;
+    margin: 0 auto;
+}
 
-        a {
-            text-decoration: none;
-            color: #333;
-            font-weight: bold;
+nav {
+    background-color: var(--primary-color);
+    padding: 1rem 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 0 0 1em 1em;
+}
 
-            &:hover {
-                color: #0066cc;
-            }
-        }
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+nav li {
+    margin:0 1rem;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+    text-transform: uppercase;
+}
+
+nav a:hover,
+nav a:focus {
+    color: var(--accent-color);
+}
+
+main {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+    color: var(--secondary-color);
+}
+
+p {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+}
+
+img.main-logo {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1.5rem auto;
+}
+
+footer {
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: 2rem;
+    border-radius: 1em 1em 0 0;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    nav li {
+        margin: 0.5rem 0;
+    }
+
+    main {
+        margin: 1rem auto;
+        padding: 0 0.5rem;
     }
 }
