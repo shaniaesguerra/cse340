@@ -2,6 +2,7 @@ import express from 'express'; //import EXPRESS library
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
+import { getAllOrganizations } from './src/models/organizations.js';
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -42,9 +43,10 @@ app.get('/', (req, res) => {
     res.render('home', {title});
 });
 
-app.get('/organizations', (req, res) => {
+app.get('/organizations', async (req, res) => {
+    const organizations = await getAllOrganizations();
     const title = 'Our Partner Organizations';
-    res.render('organizations', { title });
+    res.render('organizations', { title, organizations }); // Pass the organizations data to the template for rendering 
 });
 
 app.get('/projects', (req, res) => {
