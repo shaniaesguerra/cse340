@@ -107,6 +107,10 @@ footer {
     border-radius: 1em 1em 0 0;
 }
 
+ul li {
+    margin-bottom: 1rem;
+}
+
 @media (max-width: 600px) {
     h1 {
         font-size: 2rem;
