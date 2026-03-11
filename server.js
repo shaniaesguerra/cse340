@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
 import { getAllOrganizations } from './src/models/organizations.js';
+import { getServiceProjects } from './src/models/projects.js';
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -45,13 +46,20 @@ app.get('/', (req, res) => {
 
 app.get('/organizations', async (req, res) => {
     const organizations = await getAllOrganizations();
+    // console.log(organizations); //debugging line
     const title = 'Our Partner Organizations';
-    res.render('organizations', { title, organizations }); // Pass the organizations data to the template for rendering 
+
+    // Pass the organizations data to the template for rendering 
+    res.render('organizations', { title, organizations }); 
 });
 
-app.get('/projects', (req, res) => {
+app.get('/projects', async(req, res) => {
+    const projects = await getServiceProjects();
+    // console.log(projects); //debugging line
     const title = 'Service Projects';
-    res.render('projects', { title });
+
+    // Pass the projects data to the template for rendering
+    res.render('projects', { title, projects }); 
 });
 
 app.get('/categories', (req, res) => {
