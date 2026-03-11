@@ -131,4 +131,7 @@ VALUES
 
  SELECT * FROM ServiceProject;
 
- SELECT Organization.name, ServiceProject.title, ServiceProject.description
+ SELECT org.name, sp.title, sp.description, sp.location, sp.date
+ FROM Organization as org
+ INNER JOIN ServiceProject as sp
+ ON org.organization_id = sp.organization_id
