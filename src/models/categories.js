@@ -1,10 +1,10 @@
 import db from './db.js'
 
 //Async function queries the database for all organizations
-const getAllOrganizations = async () => {
+const getAllCategories = async () => {
     const query = `
-        SELECT organization_id, name, description, contact_email, logo_filename
-        FROM public.Organization;
+        SELECT category_id, category_name
+      FROM public.Category;
     `;
 
     const result = await db.query(query);
@@ -12,4 +12,4 @@ const getAllOrganizations = async () => {
     return result.rows; //returns all rows if successful
 }
 
-export { getAllOrganizations }  
+export { getAllCategories }  
