@@ -30,7 +30,7 @@ VALUES
 SELECT * FROM Organization;
 
 -- =======================================
--- Service Project TABLE CREATION
+-- SERVICE PROJECT TABLE CREATION
 -- =======================================
 DROP TABLE IF EXISTS ServiceProject;
 CREATE TABLE ServiceProject (
@@ -131,7 +131,123 @@ VALUES
 
  SELECT * FROM ServiceProject;
 
- SELECT org.name, sp.title, sp.description, sp.location, sp.date
- FROM Organization as org
- INNER JOIN ServiceProject as sp
- ON org.organization_id = sp.organization_id
+ -- SELECT org.name, sp.title, sp.description, sp.location, sp.date
+ -- FROM Organization as org
+ -- INNER JOIN ServiceProject as sp
+ -- ON org.organization_id = sp.organization_id
+
+-- =======================================
+-- CATEGORIES TABLE CREATION
+-- =======================================
+DROP TABLE IF EXISTS Category;
+CREATE TABLE Category (
+	category_id SERIAL PRIMARY KEY,
+	category_name VARCHAR(255) NOT NULL
+);
+
+INSERT INTO Category (category_name)
+VALUES ('Environmental'),
+	   ('Educational'),
+	   ('Community Service'),
+	   ('Health and Wellness'),
+	   ('Construction and Infrastructure'),
+	   ('Food Security'),
+	   ('Environmental Stewardship'),
+	   ('Public Spaces Improvement'),
+	   ('Accessibility and Inclusion'),
+	   ('Support and Care Services'),
+	   ('Event and Volunteer Coordination'),
+	   ('Sustainability'),
+	   ('Community Development'),
+	   ('Youth Engagement'),
+	   ('Poverty Relief'),
+	   ('Nutrition and Healthy Living');
+
+SELECT * FROM Category;
+	   
+-- =======================================
+-- SERVICE PROJECT CATEGORIES TABLE CREATION
+-- Junction table ( M:M ) 
+-- =======================================
+DROP TABLE IF EXISTS ServiceProject_Category;
+CREATE TABLE ServiceProject_Category (
+	project_id INT NOT NULL,
+	category_id INT NOT NULL,
+	PRIMARY KEY (project_id, category_id),
+	FOREIGN KEY (project_id) REFERENCES ServiceProject(project_id),
+	FOREIGN KEY (category_id) REFERENCES Category(category_id)
+);
+
+INSERT INTO ServiceProject_Category (project_id, category_id)
+VALUES
+-- Community Playground Renovation
+(11, 3),
+(11, 8),
+(11, 13),
+-- Accessible Ramp Construction
+(12, 3),
+(12, 4),
+(12, 9),
+(12, 5),
+-- Neighborhood Clean-Up Stations
+(13, 1),
+(13, 3),
+(13, 7),
+(13, 8),
+-- Sustainable Bus Stop Shelters
+(14, 1),
+(14, 3),
+(14, 12),
+(14, 5),
+-- Community Garden Tool Shed Build
+(15, 1),
+(15, 3),
+(15, 6),
+(15, 5),
+-- Urban Garden Expansion
+(21, 1),
+(21, 3),
+(21, 6),
+(21, 12),
+-- Youth Agriculture Workshop
+(22, 2),
+(22, 1),
+(22, 14),
+(22, 12),
+-- Pollinator Habitat Planting
+(23, 1),
+(23, 7),
+(23, 12),
+-- Rainwater Harvestin System Install
+(24, 1),
+(24, 12),
+(24, 5),
+-- Food Secrity Harvest Drive
+(25, 3),
+(25, 4),
+(25, 6),
+(25, 15),
+--Senior Support Visit Day
+(31, 3),
+(31, 4),
+(31, 10),
+-- Charity Clothing Sort 
+(32, 3),
+(32, 15),
+(32, 11),
+-- Community Meal Prep
+(33, 3),
+(33, 4),
+(33, 16),
+-- Park Beautification Event
+(34, 1),
+(34, 3),
+(34, 8),
+(34, 7),
+-- Back-to-School Supply Drive
+(35, 2),
+(35, 3),
+(35, 14),
+(35, 15);
+
+SELECT * FROM ServiceProject_Category;
