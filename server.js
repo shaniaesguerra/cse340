@@ -2,9 +2,7 @@ import express from 'express'; //import EXPRESS library
 import { fileURLToPath } from 'url';
 import path from 'path';
 import { testConnection } from './src/models/db.js';
-import { getAllOrganizations } from './src/models/organizations.js';
-import { getServiceProjects } from './src/models/projects.js';
-import { getAllCategories } from './src/models/categories.js';
+import router from './src/controllers/routes.js';
 
 // Define the the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
@@ -54,44 +52,11 @@ app.use((req, res, next) => {
 //Route handler for GET results to the root URL ("/"):
 // req = parameter represents the incoming requests
 // res = parameter used to send a response back to clients
-app.get('/', (req, res) => { 
-    const title = 'Home';
-    res.render('home', {title});
-});
 
-app.get('/organizations', async (req, res) => {
-    const organizations = await getAllOrganizations();
-    // console.log(organizations); //debugging line
-    const title = 'Our Partner Organizations';
-
-    // Pass the organizations data to the template for rendering 
-    res.render('organizations', { title, organizations }); 
-});
-
-app.get('/projects', async(req, res) => {
-    const projects = await getServiceProjects();
-    // console.log(projects); //debugging line
-    const title = 'Service Projects';
-
-    // Pass the projects data to the template for rendering
-    res.render('projects', { title, projects }); 
-});
-
-app.get('/categories', async (req, res) => {
-    const categories = await getAllCategories();    
-    //console.log(categories); //debugging line
-    const title = 'Categories';
-
-    // Pass the categories data to the template for rendering
-    res.render('categories', { title, categories });
-});
-
-// Test route for 500 errors
-app.get('/test-error', (req, res, next) => {
-    const err = new Error('This is a test error');
-    err.status = 500;
-    next(err);
-});
+// Use the imported router to handle routes
+// ** Place after any middleware that needs to run before route handlers
+//    and before the catch-all 404 handler
+app.use(router);
 
 // Catch-all route for 404 errors
 // Only runs if no other route matches the incoming request
