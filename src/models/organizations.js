@@ -12,4 +12,20 @@ const getAllOrganizations = async () => {
     return result.rows; //returns all rows if successful
 }
 
-export { getAllOrganizations }  
+const getOrganizationDetails = async (organizationId) => {
+    const query = `
+        SELECT
+        organization_id, name, description, contact_email, logo_filename
+        FROM Organization
+        WHERE organization_id = $1;
+        `;
+    const query_params = [organizationId];
+    const result = await db.query(query, query_params);
+
+    //Return the first row of the result, which should be the organization details
+    // or null if no rows are found
+    return result.rows.length > 0 ? result.rows[0] : null;
+};
+
+//Export the model functions
+export { getAllOrganizations, getOrganizationDetails };  
