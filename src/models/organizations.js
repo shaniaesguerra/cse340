@@ -16,7 +16,7 @@ const getOrganizationDetails = async (organizationId) => {
     const query = `
         SELECT
         organization_id, name, description, contact_email, logo_filename
-        FROM Organization
+        FROM public.Organization
         WHERE organization_id = $1;
         `;
     const query_params = [organizationId];
