@@ -2,7 +2,7 @@
     <main>
         <h1><%= title %></h1>
         <h2>Upcoming Service Projects</h2>
-        <ul>
+        <ul class="projects">
             <% projects.forEach(project => { %>
                 <li><strong><%= project.date.toDateString() %></strong> : <a href="/project/<%= project.project_id %>"><%= project.title %></a><br>(Organization : <%= project.name %>)<br><span><i>Description</i> : <%= project.description %></span> </li>
             <% }); %>

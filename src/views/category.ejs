@@ -5,9 +5,9 @@
         </h1>
         <h2><%= categoryDetails[0].category_name %></h2>
         <h3>Service Projects in this Category:</h3>
-        <ul>
+        <ul class="category-projects-list">
             <% projects.forEach(project => { %>
-                <li><a href="/project/<%= project.project_id %>"><%= project.title %></a></li>
+                <li><a href="/project/<%= project.project_id %>">➽ <%= project.title %></a></li>
             <% }); %>
         </ul>
     </main>
