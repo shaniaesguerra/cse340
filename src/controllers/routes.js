@@ -9,7 +9,9 @@ import {
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
-    organizationValidation
+    organizationValidation,
+    showEditOrganizationForm,
+    processEditOrganizationForm
 } from './organizations.js';
 import { showProjectDetailsPage } from './projects.js';
 import { showCategoryDetailsPage } from './categories.js';
@@ -24,10 +26,16 @@ router.get('/categories', showCategoriesPage);
 router.get('/organization/:id', showOrganizationDetailsPage);
 router.get('/project/:id', showProjectDetailsPage);
 router.get('/category/:id', showCategoryDetailsPage);
-router.get('/new-organization', showNewOrganizationForm);
 
+// Form handling routes for creating a new organization
+router.get('/new-organization', showNewOrganizationForm);
 // Route to handle new organization form submission
 router.post('/new-organization', organizationValidation, processNewOrganizationForm);
+
+// Edit organization form route
+router.get('/edit-organization/:id', showEditOrganizationForm);
+//Route to handle the edit organization form submission
+router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);

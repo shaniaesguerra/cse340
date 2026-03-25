@@ -10,7 +10,7 @@ const getAllOrganizations = async () => {
     const result = await db.query(query);
 
     return result.rows; //returns all rows if successful
-}
+};
 
 const getOrganizationDetails = async (organizationId) => {
     const query = `
@@ -27,5 +27,30 @@ const getOrganizationDetails = async (organizationId) => {
     return result.rows.length > 0 ? result.rows[0] : null;
 };
 
+const updateOrganization = async (organizationId, name, description, contactEmail, logoFilename) => {
+    const query = `
+        UPDATE public.Organization
+        SET name = $1, description = $2, contact_email = $3, logo_filename = $4
+        WHERE organization_id = $5
+        RETURNING organization_id;
+    `;
+    const query_params = [name, description, contactEmail, logoFilename, organizationId];
+    const result = await db.query(query, query_params);
+
+    if (result.rows.length === 0) {
+        throw new Error('Organization not found');
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Updated organization with ID:', result.rows[0].organization_id);
+    }
+
+    return result.rows[0].organization_id;
+};
+
 //Export the model functions
-export { getAllOrganizations, getOrganizationDetails };  
+export {
+    getAllOrganizations,
+    getOrganizationDetails,
+    updateOrganization
+};  
