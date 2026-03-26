@@ -34,7 +34,7 @@ SELECT * FROM Organization;
 -- =======================================
 DROP TABLE IF EXISTS ServiceProject;
 CREATE TABLE ServiceProject (
-    project_id      INT PRIMARY KEY,
+    project_id      SERIAL PRIMARY KEY,
     organization_id  INT NOT NULL,
     title           VARCHAR(255) NOT NULL,
     description     TEXT,
@@ -46,85 +46,85 @@ CREATE TABLE ServiceProject (
 );
 
 -- Organization: Bright Future Builders (organization_id = 1)
-INSERT INTO ServiceProject (project_id, organization_id, title, description, location, date)
+INSERT INTO ServiceProject (organization_id, title, description, location, date)
 VALUES
-(11, 1, 'Community Playground Renovation',
+(1, 'Community Playground Renovation',
  'Renovating an aging community playground with new equipment and safety features.',
  'Leduc, AB',
  '2026-04-12'),
 
-(12, 1, 'Accessible Ramp Construction',
+(1, 'Accessible Ramp Construction',
  'Building wheelchair-accessible ramps for a local community center.',
  'Edmonton, AB',
  '2026-05-03'),
 
-(13, 1, 'Neighborhood Clean-Up Stations',
+(1, 'Neighborhood Clean-Up Stations',
  'Installing permanent waste and recycling stations in high-traffic areas.',
  'Leduc, AB',
  '2026-06-18'),
 
-(14, 1, 'Sustainable Bus Stop Shelters',
+(1, 'Sustainable Bus Stop Shelters',
  'Constructing eco-friendly bus stop shelters using recycled materials.',
  'Calgary, AB',
  '2026-07-09'),
 
-(15, 1, 'Community Garden Tool Shed Build',
+(1, 'Community Garden Tool Shed Build',
  'Designing and building a secure tool shed for a local community garden.',
  'Red Deer, AB',
  '2026-08-21');
 
  -- Organization: Green Harvest Growers (organization_id = 2)
- INSERT INTO ServiceProject (project_id, organization_id, title, description, location, date)
+ INSERT INTO ServiceProject (organization_id, title, description, location, date)
 VALUES
-(21, 2, 'Urban Garden Expansion',
+(2, 'Urban Garden Expansion',
  'Expanding an existing urban garden to include more raised beds and composting areas.',
  'Edmonton, AB',
  '2026-04-20'),
 
-(22, 2, 'Youth Agriculture Workshop',
+(2, 'Youth Agriculture Workshop',
  'Hosting an educational workshop teaching youth about sustainable farming practices.',
  'Leduc, AB',
  '2026-05-14'),
 
-(23, 2, 'Pollinator Habitat Planting',
+(2, 'Pollinator Habitat Planting',
  'Planting native flowers to support bees and other pollinators.',
  'Spruce Grove, AB',
  '2026-06-02'),
 
-(24, 2, 'Rainwater Harvesting System Install',
+(2, 'Rainwater Harvesting System Install',
  'Installing a rainwater collection system for irrigation at a community greenhouse.',
  'St. Albert, AB',
  '2026-07-16'),
 
-(25, 2, 'Food Security Harvest Drive',
+(2, 'Food Security Harvest Drive',
  'Coordinating volunteers to harvest and distribute produce to local food banks.',
  'Edmonton, AB',
  '2026-08-28');
 
 -- Organization: UnityServe Volunteers (organization_id = 3)
-INSERT INTO ServiceProject (project_id, organization_id, title, description, location, date)
+INSERT INTO ServiceProject (organization_id, title, description, location, date)
 VALUES
-(31, 3, 'Senior Support Visit Day',
+(3, 'Senior Support Visit Day',
  'Organizing volunteers to visit seniors for conversation, errands, and light chores.',
  'Leduc, AB',
  '2026-04-08'),
 
-(32, 3, 'Charity Clothing Sort',
+(3, 'Charity Clothing Sort',
  'Sorting and preparing donated clothing for distribution to shelters.',
  'Edmonton, AB',
  '2026-05-01'),
 
-(33, 3, 'Community Meal Prep',
+(3, 'Community Meal Prep',
  'Preparing and serving meals for families in need at a local community kitchen.',
  'Edmonton, AB',
  '2026-06-11'),
 
-(34, 3, 'Park Beautification Event',
+(3, 'Park Beautification Event',
  'Coordinating volunteers to plant flowers and clean up a local park.',
  'Leduc, AB',
  '2026-07-05'),
 
-(35, 3, 'Back-to-School Supply Drive',
+(3, 'Back-to-School Supply Drive',
  'Collecting and organizing school supplies for children from low-income families.',
  'Red Deer, AB',
  '2026-08-19');
@@ -181,74 +181,74 @@ CREATE TABLE ServiceProject_Category (
 INSERT INTO ServiceProject_Category (project_id, category_id)
 VALUES
 -- Community Playground Renovation
-(11, 3),
-(11, 8),
-(11, 13),
+(1, 3),
+(1, 8),
+(1, 13),
 -- Accessible Ramp Construction
-(12, 3),
-(12, 4),
-(12, 9),
-(12, 5),
+(2, 3),
+(2, 4),
+(2, 9),
+(2, 5),
 -- Neighborhood Clean-Up Stations
-(13, 1),
-(13, 3),
-(13, 7),
-(13, 8),
+(3, 1),
+(3, 3),
+(3, 7),
+(3, 8),
 -- Sustainable Bus Stop Shelters
+(4, 1),
+(4, 3),
+(4, 12),
+(4, 5),
+-- Community Garden Tool Shed Build
+(5, 1),
+(5, 3),
+(5, 6),
+(5, 5),
+-- Urban Garden Expansion
+(6, 1),
+(6, 3),
+(6, 6),
+(6, 12),
+-- Youth Agriculture Workshop
+(7, 2),
+(7, 1),
+(7, 14),
+(7, 12),
+-- Pollinator Habitat Planting
+(8, 1),
+(8, 7),
+(8, 12),
+-- Rainwater Harvestin System Install
+(9, 1),
+(9, 12),
+(9, 5),
+-- Food Secrity Harvest Drive
+(10, 3),
+(10, 4),
+(10, 6),
+(10, 15),
+--Senior Support Visit Day
+(11, 3),
+(11, 4),
+(11, 10),
+-- Charity Clothing Sort 
+(12, 3),
+(12, 15),
+(12, 11),
+-- Community Meal Prep
+(13, 3),
+(13, 4),
+(13, 16),
+-- Park Beautification Event
 (14, 1),
 (14, 3),
-(14, 12),
-(14, 5),
--- Community Garden Tool Shed Build
-(15, 1),
-(15, 3),
-(15, 6),
-(15, 5),
--- Urban Garden Expansion
-(21, 1),
-(21, 3),
-(21, 6),
-(21, 12),
--- Youth Agriculture Workshop
-(22, 2),
-(22, 1),
-(22, 14),
-(22, 12),
--- Pollinator Habitat Planting
-(23, 1),
-(23, 7),
-(23, 12),
--- Rainwater Harvestin System Install
-(24, 1),
-(24, 12),
-(24, 5),
--- Food Secrity Harvest Drive
-(25, 3),
-(25, 4),
-(25, 6),
-(25, 15),
---Senior Support Visit Day
-(31, 3),
-(31, 4),
-(31, 10),
--- Charity Clothing Sort 
-(32, 3),
-(32, 15),
-(32, 11),
--- Community Meal Prep
-(33, 3),
-(33, 4),
-(33, 16),
--- Park Beautification Event
-(34, 1),
-(34, 3),
-(34, 8),
-(34, 7),
+(14, 8),
+(14, 7),
 -- Back-to-School Supply Drive
-(35, 2),
-(35, 3),
-(35, 14),
-(35, 15);
+(15, 2),
+(15, 3),
+(15, 14),
+(15, 15);
 
 SELECT * FROM ServiceProject_Category;
 

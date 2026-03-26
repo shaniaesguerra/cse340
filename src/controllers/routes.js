@@ -2,7 +2,12 @@ import express from 'express';
 
 import { showHomePage } from './index.js';
 import { showOrganizationsPage } from './organizations.js';
-import { showProjectsPage } from './projects.js';
+import {
+    showProjectsPage,
+    showNewProjectForm,
+    processNewProjectForm,
+    projectValidation
+ } from './projects.js';
 import { showCategoriesPage } from './categories.js';
 import { testErrorPage } from './errors.js';
 import {
@@ -36,6 +41,11 @@ router.post('/new-organization', organizationValidation, processNewOrganizationF
 router.get('/edit-organization/:id', showEditOrganizationForm);
 //Route to handle the edit organization form submission
 router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
+
+//Route for new project page
+router.get('/new-project', showNewProjectForm);
+//Route to handle new project form submission
+router.post('/new-project', projectValidation, processNewProjectForm);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);
