@@ -1,16 +1,8 @@
 import express from 'express';
 
 import { showHomePage } from './index.js';
-import { showOrganizationsPage } from './organizations.js';
 import {
-    showProjectsPage,
-    showNewProjectForm,
-    processNewProjectForm,
-    projectValidation
- } from './projects.js';
-import { showCategoriesPage } from './categories.js';
-import { testErrorPage } from './errors.js';
-import {
+    showOrganizationsPage,
     showOrganizationDetailsPage,
     showNewOrganizationForm,
     processNewOrganizationForm,
@@ -18,12 +10,23 @@ import {
     showEditOrganizationForm,
     processEditOrganizationForm
 } from './organizations.js';
-import { showProjectDetailsPage } from './projects.js';
 import {
+    showProjectsPage,
+    showProjectDetailsPage,
+    showNewProjectForm,
+    processNewProjectForm,
+    projectValidation,
+    showEditProjectForm,
+    processEditProjectForm
+} from './projects.js';
+import {
+    showCategoriesPage,
     showCategoryDetailsPage,
     showAssignCategoriesForm,
-    processAssignCategoriesForm 
- } from './categories.js';
+    processAssignCategoriesForm
+} from './categories.js';
+ 
+import { testErrorPage } from './errors.js';
 
 const router = express.Router(); //export this to server.js 
 
@@ -55,6 +58,11 @@ router.post('/new-project', projectValidation, processNewProjectForm);
 router.get('/assign-categories/:projectId', showAssignCategoriesForm);
 //Form submission for assigning categories to a project
 router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+
+//Show the form for editing a project
+router.get('/edit-project/:id', showEditProjectForm);
+//Form submission for editing a project
+router.post('/edit-project/:id', projectValidation, processEditProjectForm);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);

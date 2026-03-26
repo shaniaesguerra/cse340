@@ -1,0 +1,43 @@
+<%- include('partials/header') %>
+    <main>
+        <h1>
+            <%= title %>
+        </h1>
+
+        <form class="form" action="/edit-project/<%= projectDetails[0].project_id %>" method="POST">
+            <div class="form-group">
+                <label for="title">Project Title: </label>
+                <input type="text" id="title" name="title" maxlength="150" value="<%= projectDetails[0].title %>" required />
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description: </label>
+                <textarea id="description" name="description" maxlength="500" required><%= projectDetails[0].description %></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="location">Location: </label>
+                <input type="text" id="location" name="location" maxlength="255" value="<%= projectDetails[0].location %>" required />
+            </div>
+            
+            <div class="form-group">
+                <label for="date">Date: </label>
+                <input type="date" id="date" name="date"  value= "<%= projectDetails[0].date.toISOString().split('T')[0] %>"required />
+            </div>
+            
+            <div class="form-group">
+                <label for="organizationId">Organization: </label>
+                <select id="organizationId" name="organizationId" required>
+                    <option value="" disabled selected> Select an Organization </option>
+                    <% organizations.forEach(org=> { %>
+                        <option value="<%= org.organization_id %>" <%= projectDetails[0].organization_id === org.organization_id ? 'selected' : '' %>>
+                            <%= org.name %>
+                        </option>
+                    <% }); %>
+                </select>
+            </div>
+            <button type="submit">Update Project</button>
+        </form>
+
+    </main>
+    <%- include('partials/footer') %>
