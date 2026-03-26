@@ -1,7 +1,7 @@
 //Import necessary modules and functions
 import { getAllCategories } from '../models/categories.js';
-import { getProjectsByCategoryId } from '../models/projects.js';
-import { getCategoryById, getCategoriesByProjectId } from '../models/categories.js';
+import { getProjectDetails, getProjectsByCategoryId } from '../models/projects.js';
+import { getCategoryById, getCategoriesByProjectId, updateCategoryAssignment } from '../models/categories.js';
 
 // Define controller functions
 const showCategoriesPage = async (req, res) => {
@@ -23,5 +23,38 @@ const showCategoryDetailsPage = async (req, res) => {
     res.render('category', { title, categoryDetails, projects });   
 };
 
+const showAssignCategoriesForm = async (req, res) => {
+    const projectId = req.params.projectId;
+    const projectDetails = await getProjectDetails(projectId);
+    const categories = await getAllCategories();
+    const assignedCategories = await getCategoriesByProjectId(projectId);
+
+    const title = 'Assign Categories';
+
+    res.render('assign-categories', { title, projectId, projectDetails, categories, assignedCategories });
+};
+
+const processAssignCategoriesForm = async (req, res) => {
+    const projectId = req.params.projectId;
+    const selectedCategoryIds = req.body.categoryIds || []; 
+
+    //Ensure selectedCategoryIds is an array
+    const categoryIdsArray = Array.isArray(selectedCategoryIds) ? selectedCategoryIds : [selectedCategoryIds];
+    
+    // Update category assignments for the project
+    await updateCategoryAssignment(projectId, categoryIdsArray);
+
+    //Flash a success message to the user
+    req.flash('success', 'Categories assigned successfully!');
+    
+    // Redirect to the project details page or a success page
+    res.redirect(`/project/${projectId}`);
+};
+
 //Export controller functions
-export { showCategoriesPage, showCategoryDetailsPage };
+export {
+    showCategoriesPage,
+    showCategoryDetailsPage,
+    showAssignCategoriesForm,
+    processAssignCategoriesForm 
+};
