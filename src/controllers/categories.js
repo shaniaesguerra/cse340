@@ -1,7 +1,13 @@
 //Import necessary modules and functions
 import { getAllCategories } from '../models/categories.js';
 import { getProjectDetails, getProjectsByCategoryId } from '../models/projects.js';
-import { getCategoryById, getCategoriesByProjectId, updateCategoryAssignment, createCategory} from '../models/categories.js';
+import {
+    getCategoryById,
+    getCategoriesByProjectId,
+    updateCategoryAssignment,
+    createCategory,
+    updateCategory
+} from '../models/categories.js';
 import { body, validationResult } from 'express-validator';
 
 // Define validation and sanitization rules for category form
@@ -93,6 +99,35 @@ const processNewCategoryForm = async (req, res) => {
     res.redirect(`/category/${categoryId}`);
 };
 
+const showEditCategoryForm = async (req, res) => {
+    const categoryId = req.params.id;
+    const categoryDetails = await getCategoryById(categoryId);
+    const title = 'Edit Category';
+
+    res.render('edit-category', { title, categoryDetails });
+};
+
+const processEditCategoryForm = async (req, res) => {
+    //Check for validation errors   
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        //Validation failed - loop through errors and set flash messages
+        results.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
+        //Redirect back to the edit category form
+        return res.redirect(`/edit-category/${req.params.id}`);
+    };
+
+    const categoryId = req.params.id;
+    const { categoryName } = req.body;
+    await updateCategory(categoryId, categoryName);
+
+    //Set a success flash message
+    req.flash('success', 'Category updated successfully!');
+    res.redirect(`/category/${categoryId}`);
+};
+
 //Export controller functions
 export {
     showCategoriesPage,
@@ -101,5 +136,7 @@ export {
     processAssignCategoriesForm,
     showNewCategoryForm,
     processNewCategoryForm,
-    categoryValidation
+    categoryValidation,
+    showEditCategoryForm,
+    processEditCategoryForm
 };

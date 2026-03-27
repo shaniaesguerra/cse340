@@ -83,10 +83,31 @@ const createCategory = async (categoryName) => {
   return result.rows[0].category_id;
 };
 
+const updateCategory = async (categoryId, categoryName) => {
+  const query = `
+    UPDATE public.Category
+    SET category_name = $1
+    WHERE category_id = $2
+    RETURNING category_id;
+  `;
+
+  const query_params = [categoryName, categoryId];
+  const result = await db.query(query, query_params);
+
+  if (result.rowCount === 0) {
+    throw new Error('Failed to update category');
+  }
+  if (process.env.ENABLE_SQL_LOGGING === 'true') {
+    console.log('Updated category with ID:', result.rows[0].category_id);
+  }
+
+  return result.rows[0].category_id;
+};
 export {
   getAllCategories,
   getCategoryById,
   getCategoriesByProjectId,
   updateCategoryAssignment,
-  createCategory  
+  createCategory,
+  updateCategory
 };  

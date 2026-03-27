@@ -4,6 +4,7 @@
             <%= title %>
         </h1>
         <h2><%= categoryDetails[0].category_name %></h2>
+        <p><a href="/edit-category/<%= categoryDetails[0].category_id %>"> &#x270E; Edit Category</a></p>
         <h3>Service Projects in this Category:</h3>
         <ul class="category-projects-list">
             <% projects.forEach(project => { %>
