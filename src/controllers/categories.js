@@ -1,7 +1,21 @@
 //Import necessary modules and functions
 import { getAllCategories } from '../models/categories.js';
 import { getProjectDetails, getProjectsByCategoryId } from '../models/projects.js';
-import { getCategoryById, getCategoriesByProjectId, updateCategoryAssignment } from '../models/categories.js';
+import { getCategoryById, getCategoriesByProjectId, updateCategoryAssignment, createCategory} from '../models/categories.js';
+import { body, validationResult } from 'express-validator';
+
+// Define validation and sanitization rules for category form
+// Define validation rules for category form
+const categoryValidation = [
+    body('categoryName')
+        .trim()
+        .notEmpty()
+        .withMessage('Category name is required')
+        .isLength({ min: 3, max: 150 })
+        .withMessage('Category name must be between 3 and 150 characters')
+        .matches(/^[a-zA-Z\s]+$/)
+        .withMessage('Category name can only contain letters, and spaces'),
+];
 
 // Define controller functions
 const showCategoriesPage = async (req, res) => {
@@ -51,10 +65,41 @@ const processAssignCategoriesForm = async (req, res) => {
     res.redirect(`/project/${projectId}`);
 };
 
+const showNewCategoryForm = async (req, res) => {
+    const title = 'Add New Category';
+
+    res.render('new-category', { title });
+};
+
+const processNewCategoryForm = async (req, res) => {
+    //Check for validation errors
+    const results = validationResult(req);
+    if (!results.isEmpty()) {
+        //Validation failed - loop through errors and set flash messages
+        results.array().forEach(error => {
+            req.flash('error', error.msg);
+        });
+
+        //Redirect back to the new category form
+        return res.redirect('/new-category');
+    };
+
+    const { categoryName } = req.body;
+    const categoryId = await createCategory(categoryName);
+    
+    //Set a success flash message
+    req.flash('success', 'Category added successfully!');
+    //Redirect to the categories page
+    res.redirect(`/category/${categoryId}`);
+};
+
 //Export controller functions
 export {
     showCategoriesPage,
     showCategoryDetailsPage,
     showAssignCategoriesForm,
-    processAssignCategoriesForm 
+    processAssignCategoriesForm,
+    showNewCategoryForm,
+    processNewCategoryForm,
+    categoryValidation
 };
