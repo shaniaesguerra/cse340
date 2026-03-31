@@ -104,7 +104,8 @@ footer {
     padding: 1rem 0;
     margin-top: 2rem;
 }
-main a{
+
+main a {
     white-space: nowrap;
 }
 
@@ -155,7 +156,7 @@ p a {
     gap: 1rem;
 
     li {
-        background-color:#a6def8;
+        background-color: #a6def8;
         padding: 1rem;
         border-radius: 0.5rem;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -168,14 +169,16 @@ p a {
     }
 }
 
-.categories-list, .orgProjects-list, .category-projects-list {
-    li{
+.categories-list,
+.orgProjects-list,
+.category-projects-list {
+    li {
         padding-bottom: 0.5rem;
     }
 }
 
 /* Form styles */
-.form{
+.form {
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -183,7 +186,9 @@ p a {
     margin: 1rem auto;
 
     input[type="text"],
-    input[type="email"], textarea {
+    input[type="email"],
+    input[type="password"],
+    textarea {
         padding: 0.5rem;
         border: 1px solid var(--muted-color);
         border-radius: 4px;
@@ -193,12 +198,12 @@ p a {
         box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
-    label{
+    label {
         font-weight: 500;
         justify-self: flex-start;
     }
 
-    textarea{
+    textarea {
         resize: none;
         overflow: auto;
         width: 100%;
