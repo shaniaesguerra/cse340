@@ -258,3 +258,51 @@ SELECT * FROM ServiceProject_Category;
 -- ON c.category_id = spc.category_id
 -- INNER JOIN ServiceProject AS sp
 -- ON spc.project_id = sp.project_id
+
+-- =======================================
+-- ROLES TABLE CREATION
+-- =======================================
+DROP TABLE IF EXISTS Roles;
+CREATE TABLE Roles (
+	role_id SERIAL PRIMARY KEY,
+	role_name VARCHAR(50) UNIQUE NOT NULL,
+	role_description TEXT
+);
+
+INSERT INTO Roles (role_name, role_description)
+VALUES
+('user', 'Standard user with basic access'),
+('admin', 'Administrator with full system access');
+
+SELECT * FROM Roles;
+
+-- =======================================
+-- USERS TABLE CREATION
+-- =======================================
+DROP TABLE IF EXISTS Users;
+CREATE TABLE Users (
+	user_id SERIAL PRIMARY KEY,
+	name VARCHAR(100) NOT NULL,
+	email VARCHAR(100) UNIQUE NOT NULL,
+	password_hash VARCHAR(255) NOT NULL,
+	role_id INT,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT fk_Users_Roles
+		FOREIGN KEY (role_id)
+		REFERENCES Roles(role_id)
+);
+
+-- Insert test user
+-- INSERT INTO Users(name, email, password_hash, role_id)
+-- VALUES
+-- ('test-user', 'test@email.com', 'placehoder_hash', 1);
+
+SELECT * FROM Users;
+
+--Join users and roles to see complete info
+-- SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
+-- FROM Users as u
+-- JOIN Roles as r ON u.role_id = r.role_id;
+
+-- Delete the test user
+-- DELETE FROM Users WHERE email = 'test@email.com';
