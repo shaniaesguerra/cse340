@@ -1,3 +1,5 @@
+import { validationResult } from "express-validator";
+import bycrypt from 'bcrypt';
 import db from "./db.js";
 
 const createUser = async (name, email, passwordHash) => {
@@ -22,4 +24,48 @@ const createUser = async (name, email, passwordHash) => {
     return result.rows[0].user_id;
 };
 
-export { createUser };
+const findUserByEmail = async (email) => {
+    const query = `
+        SELECT user_id, name, email, password_hash, role_id
+        FROM Users
+        WHERE email = $1
+    `;
+
+    const query_params = [email];
+    const result = await db.query(query, query_params);
+
+    if (result.rows.length === 0) {
+        return null; //User was not found
+    }
+
+    return result.rows[0];
+};
+
+const verifyPassword = async (password, passwordHash) => {
+    return bycrypt.compare(password, passwordHash);
+};
+
+const authenticateUser = async (email, password) => {
+    //Find user by email:
+    const user = await findUserByEmail(email);
+
+    //If no user, return null:
+    if (!user) {
+        return null;
+    }
+
+    //Verify if the password is correct:
+    const passwordIsValid = await verifyPassword(password, user.password_hash);
+    if (!passwordIsValid) {
+        return null;
+    }
+
+    //Remove password_hash and return user:
+    delete user.password_hash;
+    return user;
+};
+
+export {
+    createUser,
+    authenticateUser
+};

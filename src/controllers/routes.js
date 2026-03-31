@@ -34,7 +34,10 @@ import {
 import {
     showUserRegistrationForm,
     processUserRegistrationForm,
-    userValidation
+    userValidation,
+    showLoginForm,
+    processLoginForm,
+    processLogout
 } from './users.js'; 
 
 import { testErrorPage } from './errors.js';
@@ -89,6 +92,15 @@ router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
 router.get('/register', showUserRegistrationForm);
 //Handle user registration form submission
 router.post('/register', userValidation, processUserRegistrationForm);  
+
+//User login routes:
+//Show the login form
+router.get('/login', showLoginForm);
+//Handle user login form submission
+router.post('/login', processLoginForm);
+//Handle user logout
+router.get('/logout', processLogout);
+
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);
