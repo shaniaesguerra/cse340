@@ -88,7 +88,7 @@ const processLogout = async (req, res) => {
         delete req.session.user;
     }
 
-    req.flash('success', 'Logout successful!');
+    req.flash('success', 'Logout Successful!');
     res.redirect('/login');
 };
 
