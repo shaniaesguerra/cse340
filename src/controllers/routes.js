@@ -37,7 +37,9 @@ import {
     userValidation,
     showLoginForm,
     processLoginForm,
-    processLogout
+    processLogout,
+    requireLogin,
+    showDashboard
 } from './users.js'; 
 
 import { testErrorPage } from './errors.js';
@@ -101,6 +103,8 @@ router.post('/login', processLoginForm);
 //Handle user logout
 router.get('/logout', processLogout);
 
+//Protected Dashboard
+router.get('/dashboard', requireLogin, showDashboard);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);
