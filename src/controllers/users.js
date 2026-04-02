@@ -102,13 +102,32 @@ const requireLogin = (req, res, next) => {
 
 const showDashboard = (req, res) => {
     const user = req.session.user;
-
+    console.log(user);
     if (!user) {
         req.flash('error', 'You must be logged in to view the dashboard.');
         return res.redirect('/login');
     }
 
     res.render('dashboard', {title: 'Dashboard', name: user.name , email: user.email });
+};
+
+const requireRole = (role) => {
+    return (req, res, next) => {
+        //Check if user is logged in
+        if (!req.session || !req.session.user) {
+            req.flash('error', 'You must be logged in to access that page.');
+            return res.redirect('/login');//Redirect to login page
+        }
+
+        //Check if user's role matches the required role
+        if (req.session.user.role_name !== role) {
+            req.flash('error', 'You do not have permission to access this page.');
+            return res.redirect('/'); //Redirect to homepage
+        }
+
+        //If required role matches the user role, continue
+        next();
+    };
 };
 
 export {
@@ -119,5 +138,6 @@ export {
     processLoginForm,
     processLogout,
     requireLogin,
-    showDashboard
+    showDashboard,
+    requireRole
 };
