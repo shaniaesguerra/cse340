@@ -306,3 +306,9 @@ SELECT * FROM Users;
 
 -- Delete the test user
 -- DELETE FROM Users WHERE email = 'test@email.com';
+
+-- Update a specific user to have admin role
+UPDATE users SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin') WHERE user_id = 1;
+
+-- Verify the update by listing all users and their roles
+SELECT users.user_id, users.email, roles.role_name FROM users JOIN roles ON users.role_id = roles.role_id;
