@@ -102,13 +102,19 @@ const requireLogin = (req, res, next) => {
 
 const showDashboard = (req, res) => {
     const user = req.session.user;
-    console.log(user);
+    //console.log(user); //for debugging
     if (!user) {
         req.flash('error', 'You must be logged in to view the dashboard.');
         return res.redirect('/login');
     }
 
-    res.render('dashboard', {title: 'Dashboard', name: user.name , email: user.email });
+    res.render('dashboard', {
+        title: 'Dashboard',
+        name: user.name,
+        email: user.email,
+        role_name: user.role_name,
+        role_description: user.role_description
+    });
 };
 
 const requireRole = (role) => {
