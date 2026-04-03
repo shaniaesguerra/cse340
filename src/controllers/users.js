@@ -1,4 +1,4 @@
-import bycrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import { createUser, authenticateUser, getAllUsers} from '../models/users.js';
 import { body, validationResult } from 'express-validator';
 
@@ -31,8 +31,8 @@ const processUserRegistrationForm = async (req, res) => {
     try {
         //Hash the password before storing:
         //get random salt (text added to password before hashing to make it more secure)
-        const salt = await bycrypt.genSalt(10);
-        const passwordHash = await bycrypt.hash(password, salt);
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(password, salt);
 
         //Create the user in the database
         const userId = await createUser(name, email, passwordHash);
