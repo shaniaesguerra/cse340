@@ -1,5 +1,5 @@
 import { validationResult } from "express-validator";
-import bycrypt from 'bcrypt';
+import bcrypt from 'bcrypt';
 import db from "./db.js";
 
 const createUser = async (name, email, passwordHash) => {
@@ -43,7 +43,7 @@ const findUserByEmail = async (email) => {
 };
 
 const verifyPassword = async (password, passwordHash) => {
-    return bycrypt.compare(password, passwordHash);
+    return bcrypt.compare(password, passwordHash);
 };
 
 const authenticateUser = async (email, password) => {
