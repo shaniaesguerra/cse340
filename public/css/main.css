@@ -150,7 +150,7 @@ p a {
     }
 }
 
-.projects {
+.projects , .users{
     display: flex;
     flex-direction: column;
     gap: 1rem;

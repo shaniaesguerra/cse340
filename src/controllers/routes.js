@@ -40,7 +40,8 @@ import {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showUserPage
 } from './users.js'; 
 
 import { testErrorPage } from './errors.js';
@@ -106,6 +107,9 @@ router.get('/logout', processLogout);
 
 //Protected Dashboard
 router.get('/dashboard', requireLogin, showDashboard);
+
+//Show users page:
+router.get('/users', requireLogin, requireRole('admin'), showUserPage);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);

@@ -1,5 +1,5 @@
 import bycrypt from 'bcrypt';
-import { createUser, authenticateUser } from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers} from '../models/users.js';
 import { body, validationResult } from 'express-validator';
 
 const userValidation = [
@@ -127,13 +127,19 @@ const requireRole = (role) => {
 
         //Check if user's role matches the required role
         if (req.session.user.role_name !== role) {
-            req.flash('error', 'You do not have permission to access this page.');
-            return res.redirect('/'); //Redirect to homepage
+            req.flash('error', 'You do not have permission to access that page.');
+            return res.redirect('/dashboard'); //Redirect to dashboard
         }
 
         //If required role matches the user role, continue
         next();
     };
+};
+
+const showUserPage = async (req, res) => {
+    const users = await getAllUsers();
+    const title = 'All Users';
+    res.render('users', { title, users });
 };
 
 export {
@@ -145,5 +151,6 @@ export {
     processLogout,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showUserPage
 };
