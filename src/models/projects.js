@@ -12,7 +12,7 @@ const getServiceProjects = async () => {
     const result = await db.query(query);
 
     return result.rows; //returns all rows if successful
-}
+};
 
 const getProjectsByOrganizationId = async (organizationId) => {
     const query = `
@@ -27,7 +27,7 @@ const getProjectsByOrganizationId = async (organizationId) => {
     const result = await db.query(query, query_params);
 
     return result.rows; //returns all rows if successful
-}
+};
 
 const getUpcomingProjects = async (number_of_projects) => {
     const query = `
@@ -98,7 +98,7 @@ const createProject = async (title, description, location, date, organizationId)
     }
 
     return result.rows[0].project_id;
-}
+};
 
 const updateProject = async (projectId, title, description, location, date, organizationId) => {
     const query = `
@@ -122,6 +122,82 @@ const updateProject = async (projectId, title, description, location, date, orga
     return result.rows[0].project_id;
 };
 
+const addVolunteer = async (userId, projectId) => {
+    const query = `
+    INSERT INTO public.Users_ServiceProject (user_id, project_id)
+    VALUES ($1, $2)
+    RETURNING user_id, project_id
+    `;
+
+    const query_params = [userId, projectId];
+    const result = await db.query(query, query_params);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to add volunteer to project');
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Added volunteer with ID:', result.rows[0].userId, 'to project with ID:', result.rows[0].projectId);
+    }
+
+    return result.rows[0];
+};
+
+const deleteVolunteer = async (userId, projectId) => {
+    const query = `
+    DELETE FROM public.Users_ServiceProject
+    WHERE user_id = $1 AND project_id = $2
+    RETURNING user_id , project_id
+    `;
+
+    const query_params = [userId, projectId];
+    const result = await db.query(query, query_params);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to delete volunteer from project');
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Deleted volunteer with ID:', result.rows[0].userId, 'from project with ID:', result.rows[0].projectId);
+    }
+
+    return result.rows[0];
+};
+
+const getProjectsByUserId = async (userId) => {
+    const query = `
+    SELECT sp.project_id,
+           sp.organization_id,
+           sp.title,
+           sp.description,
+           sp.location,
+           sp.date
+    FROM ServiceProject as sp
+    INNER JOIN Users_ServiceProject as usp
+    ON sp.project_id = usp.project_id
+    WHERE usp.user_id = $1
+    `;
+
+    const query_params = [userId];
+    const result = await db.query(query, query_params);
+
+    return result.rows; //return all projects for the given userId
+};
+
+const getVolunteersByProjectId = async (projectId) => {
+    const query = `
+    SELECT u.user_id, u.name, u.email
+    FROM public.Users_ServiceProject as usp
+    JOIN public.Users as u
+    ON usp.user_id = u.user_id
+    WHERE usp.project_id = $1
+    `;
+
+    const query_params = [projectId];
+    const result = await db.query(query, query_params); 
+    return result.rows; //return all volunteers for the given projectId
+};
+
 export {
     getServiceProjects,
     getProjectsByOrganizationId,
@@ -129,5 +205,9 @@ export {
     getProjectDetails,
     getProjectsByCategoryId,
     createProject,
-    updateProject
+    updateProject,
+    addVolunteer,
+    deleteVolunteer,
+    getProjectsByUserId,
+    getVolunteersByProjectId
 };

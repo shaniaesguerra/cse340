@@ -10,6 +10,18 @@
         <% if (user && user.role_name==='admin') { %>
             <p><a href="/assign-categories/<%= projectDetails[0].project_id %>"> &#x270E; Edit Categories </a></p>
         <% } %>
+
+        <% if (user) { %>
+            <% if (isVolunteer) { %>
+                <form action="/project/<%= projectDetails[0].project_id %>/unvolunteer" method="POST">
+                    <button type="submit">Unvolunteer</button>
+                </form>
+            <% } else { %>
+                <form action="/project/<%= projectDetails[0].project_id %>/volunteer" method="POST">
+                    <button type="submit">Volunteer</button>
+                </form>
+            <% } %>
+        <% } %>
         
         <p>Description: <%= projectDetails[0].description %></p>
         <p>Date: <%= projectDetails[0].date.toDateString() %></p>

@@ -81,7 +81,7 @@ const getAllUsers = async () => {
     }
 
     return result.rows; //returns all rows if successful
-}
+};
 
 export {
     createUser,

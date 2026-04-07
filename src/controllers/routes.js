@@ -17,7 +17,9 @@ import {
     processNewProjectForm,
     projectValidation,
     showEditProjectForm,
-    processEditProjectForm
+    processEditProjectForm,
+    addVolunteerForProject,
+    deleteVolunteerForProject       
 } from './projects.js';
 import {
     showCategoriesPage,
@@ -110,6 +112,11 @@ router.get('/dashboard', requireLogin, showDashboard);
 
 //Show users page:
 router.get('/users', requireLogin, requireRole('admin'), showUserPage);
+
+//Show the form for volunteering for a project
+router.post('/project/:id/volunteer', requireLogin, addVolunteerForProject);
+//Show the form for removing oneself as a volunteer for a project
+router.post('/project/:id/unvolunteer', requireLogin, deleteVolunteerForProject);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);
