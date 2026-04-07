@@ -164,26 +164,6 @@ const deleteVolunteer = async (userId, projectId) => {
     return result.rows[0];
 };
 
-const getProjectsByUserId = async (userId) => {
-    const query = `
-    SELECT sp.project_id,
-           sp.organization_id,
-           sp.title,
-           sp.description,
-           sp.location,
-           sp.date
-    FROM ServiceProject as sp
-    INNER JOIN Users_ServiceProject as usp
-    ON sp.project_id = usp.project_id
-    WHERE usp.user_id = $1
-    `;
-
-    const query_params = [userId];
-    const result = await db.query(query, query_params);
-
-    return result.rows; //return all projects for the given userId
-};
-
 const getVolunteersByProjectId = async (projectId) => {
     const query = `
     SELECT u.user_id, u.name, u.email
@@ -208,6 +188,5 @@ export {
     updateProject,
     addVolunteer,
     deleteVolunteer,
-    getProjectsByUserId,
     getVolunteersByProjectId
 };

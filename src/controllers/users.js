@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { createUser, authenticateUser, getAllUsers} from '../models/users.js';
+import { createUser, authenticateUser, getAllUsers, getProjectsByUserId} from '../models/users.js';
 import { body, validationResult } from 'express-validator';
 
 const userValidation = [
@@ -100,8 +100,10 @@ const requireLogin = (req, res, next) => {
     next();
 };
 
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
     const user = req.session.user;
+    const projects = await getProjectsByUserId(user.user_id);
+
     //console.log(user); //for debugging
     if (!user) {
         req.flash('error', 'You must be logged in to view the dashboard.');
@@ -113,7 +115,8 @@ const showDashboard = (req, res) => {
         name: user.name,
         email: user.email,
         role_name: user.role_name,
-        role_description: user.role_description
+        role_description: user.role_description,
+        projects
     });
 };
 

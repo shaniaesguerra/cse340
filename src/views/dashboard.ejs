@@ -11,5 +11,22 @@
         <% if (user && user.role_name==='admin' ) { %>
             <p><strong> View All Users:</strong> <a href="/users">➽ Users</a></p>
         <% } %>
+
+        <h2>Your Projects:</h2>
+        <% if (projects.length === 0) { %>
+                <p>You are not currently volunteering for any projects.</p>
+        <% } else {%>
+            <p>Here are the projects you are currently volunteering for:</p>    
+            <ul class="projects">
+                <% projects.forEach(project => { %>
+                    <li><strong>
+                            <%= project.date.toDateString() %>
+                        </strong> : <a href="/project/<%= project.project_id %>">
+                            <%= project.title %></a>
+                        <br><span><i>Description</i> : <%= project.description %></span>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } %>
     </main>
 <%- include('partials/footer') %>
