@@ -13,11 +13,11 @@
 
         <% if (user) { %>
             <% if (isVolunteer) { %>
-                <form action="/project/<%= projectDetails[0].project_id %>/unvolunteer" method="POST">
+                <form class="volunteer-form projectBtn" action="/project/<%= projectDetails[0].project_id %>/unvolunteer" method="POST">
                     <button type="submit">Unvolunteer</button>
                 </form>
             <% } else { %>
-                <form action="/project/<%= projectDetails[0].project_id %>/volunteer" method="POST">
+                <form class="volunteer-form projectBtn" action="/project/<%= projectDetails[0].project_id %>/volunteer" method="POST">
                     <button type="submit">Volunteer</button>
                 </form>
             <% } %>

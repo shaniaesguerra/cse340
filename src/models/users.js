@@ -90,17 +90,26 @@ const getProjectsByUserId = async (userId) => {
            sp.title,
            sp.description,
            sp.location,
-           sp.date
+           sp.date,
+           STRING_AGG(usp.user_id::text, ',') AS volunteers
     FROM ServiceProject as sp
-    INNER JOIN Users_ServiceProject as usp
+    LEFT JOIN Users_ServiceProject as usp 
     ON sp.project_id = usp.project_id
-    WHERE usp.user_id = $1
+    GROUP BY sp.project_id,
+           sp.organization_id,
+           sp.title,
+           sp.description,
+           sp.location,
+           sp.date
     `;
 
-    const query_params = [userId];
-    const result = await db.query(query, query_params);
+    const result = await db.query(query);
 
-    return result.rows; //return all projects for the given userId
+    //return parse volunteers into an array of user_ids
+    return result.rows.map(project => ({
+        ...project,
+        volunteers: project.volunteers ? project.volunteers.split(',') : []
+    }));
 };
 
 export {

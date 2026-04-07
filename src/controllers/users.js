@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createUser, authenticateUser, getAllUsers, getProjectsByUserId} from '../models/users.js';
+import { addVolunteer, deleteVolunteer} from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 
 const userValidation = [
@@ -102,9 +103,20 @@ const requireLogin = (req, res, next) => {
 
 const showDashboard = async (req, res) => {
     const user = req.session.user;
-    const projects = await getProjectsByUserId(user.user_id);
+    //Fetch all projects with volunteers
+    const allProjects = await getProjectsByUserId(user.user_id); 
+    //console.log(allProjects); //for debugging
+    
+    // Set isVolunteer per project
+    if (req.session && user) {
+        allProjects.forEach(project => {
+            project.isVolunteer = project.volunteers && project.volunteers.includes(user.user_id.toString());  // Ensure user_id is a string if needed
+        });
+    }
 
-    //console.log(user); //for debugging
+    //Filter projects to only include those that the user is volunteering for
+    const projects = allProjects.filter(project => project.isVolunteer);
+    
     if (!user) {
         req.flash('error', 'You must be logged in to view the dashboard.');
         return res.redirect('/login');
@@ -145,6 +157,38 @@ const showUserPage = async (req, res) => {
     res.render('users', { title, users });
 };
 
+const volunteerForProject = async (req, res) => {
+    const userId = req.session.user.user_id;
+    const projectId = req.body.projectId;
+    try {
+        await addVolunteer(userId, projectId);
+        req.flash('success', 'You have successfully volunteered for this project!');
+
+        //Redirect back to the page the user was on, or to dashboard if it is not available
+        res.redirect(req.headers.referer || '/dashboard');  
+    } catch (error) {
+        console.error('Error volunteering for project:', error);
+        req.flash('error', 'An error occurred while volunteering for the project. Please try again.');
+        
+        //Redirect back to the page the user was on, or to dashboard if it is not available
+        res.redirect(req.headers.referer || '/dashboard');  
+    }
+};
+
+const unvolunteerForProject = async (req, res) => {
+    const userId = req.session.user.user_id;
+    const projectId = req.body.projectId;
+    try {
+        await deleteVolunteer(userId, projectId);
+        req.flash('success', 'You have unvolunteered for this project.');
+        res.redirect(`/dashboard`);
+    } catch (error) {
+        console.error('Error unvolunteering for project:', error);
+        req.flash('error', 'Failed to unvolunteer for the project. Please try again.');
+        res.redirect(`/dashboard`);
+    }
+};
+
 export {
     showUserRegistrationForm,
     processUserRegistrationForm,
@@ -155,5 +199,7 @@ export {
     requireLogin,
     showDashboard,
     requireRole,
-    showUserPage
+    showUserPage,
+    volunteerForProject,
+    unvolunteerForProject
 };

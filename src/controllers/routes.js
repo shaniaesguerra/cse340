@@ -43,8 +43,12 @@ import {
     requireLogin,
     showDashboard,
     requireRole,
-    showUserPage
+    showUserPage,
+    volunteerForProject,
+    unvolunteerForProject
 } from './users.js'; 
+
+import { showVolunteerPage } from './volunteer.js';
 
 import { testErrorPage } from './errors.js';
 
@@ -117,6 +121,13 @@ router.get('/users', requireLogin, requireRole('admin'), showUserPage);
 router.post('/project/:id/volunteer', requireLogin, addVolunteerForProject);
 //Show the form for removing oneself as a volunteer for a project
 router.post('/project/:id/unvolunteer', requireLogin, deleteVolunteerForProject);
+
+//Show the form for volunteering for a project from the dashboard
+router.post('/volunteer', requireLogin, volunteerForProject);
+router.post('/unvolunteer', requireLogin, unvolunteerForProject);
+
+//Show the volunteering page for a user 
+router.get('/volunteering', requireLogin, showVolunteerPage);
 
 //Error handling route for testing errors
 router.get('/test-error', testErrorPage);
