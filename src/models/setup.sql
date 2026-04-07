@@ -252,12 +252,12 @@ VALUES
 
 SELECT * FROM ServiceProject_Category;
 
--- SELECT c.category_name, sp.title
--- FROM Category AS c
--- INNER JOIN ServiceProject_Category AS spc
--- ON c.category_id = spc.category_id
--- INNER JOIN ServiceProject AS sp
--- ON spc.project_id = sp.project_id
+SELECT c.category_name, sp.title
+FROM Category AS c
+INNER JOIN ServiceProject_Category AS spc
+ON c.category_id = spc.category_id
+INNER JOIN ServiceProject AS sp
+ON spc.project_id = sp.project_id
 
 -- =======================================
 -- ROLES TABLE CREATION
@@ -293,22 +293,37 @@ CREATE TABLE Users (
 );
 
 -- Insert test user
--- INSERT INTO Users(name, email, password_hash, role_id)
--- VALUES
--- ('test-user', 'test@email.com', 'placehoder_hash', 1);
+INSERT INTO Users(name, email, password_hash, role_id)
+VALUES
+('test-user', 'test@email.com', 'placehoder_hash', 1);
 
 SELECT * FROM Users;
 
 --Join users and roles to see complete info
--- SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
--- FROM Users as u
--- JOIN Roles as r ON u.role_id = r.role_id;
+SELECT u.user_id, u.name, u.email, r.role_name, r.role_description
+FROM Users as u
+JOIN Roles as r ON u.role_id = r.role_id;
 
 -- Delete the test user
--- DELETE FROM Users WHERE email = 'test@email.com';
+DELETE FROM Users WHERE email = 'test@email.com';
 
 -- Update a specific user to have admin role
 UPDATE users SET role_id = (SELECT role_id FROM roles WHERE role_name = 'admin') WHERE user_id = 1;
 
 -- Verify the update by listing all users and their roles
 SELECT users.user_id, users.email, roles.role_name FROM users JOIN roles ON users.role_id = roles.role_id;
+
+-- =======================================
+-- USERS PROJECTS TABLE CREATION
+-- Junction table ( M:M ) 
+-- =======================================
+DROP TABLE IF EXISTS Users_ServiceProject;
+CREATE TABLE Users_ServiceProject (
+	user_id INT NOT NULL,
+	project_id INT NOT NULL,
+	PRIMARY KEY (project_id, user_id ),
+	FOREIGN KEY (user_id ) REFERENCES Users(user_id),
+	FOREIGN KEY (project_id) REFERENCES ServiceProject(project_id)
+);
+
+SELECT * FROM Users_ServiceProject;
