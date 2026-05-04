@@ -257,7 +257,7 @@ FROM Category AS c
 INNER JOIN ServiceProject_Category AS spc
 ON c.category_id = spc.category_id
 INNER JOIN ServiceProject AS sp
-ON spc.project_id = sp.project_id
+ON spc.project_id = sp.project_id;
 
 -- =======================================
 -- ROLES TABLE CREATION
